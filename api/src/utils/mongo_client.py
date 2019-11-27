@@ -18,9 +18,9 @@ class IndexDatabase:
 
     def get(self, word, doc=None):
         field = word if doc is None else f'{word}.{doc}'
-        query = self._constants.find_one({}, {field: 1})
+        query = self._index.find_one({}, {field: 1})
         if query is not None:
-            return query[word] if doc is None else query[doc]
+            return query[word] if doc is None else query[word][doc]
         else:
             self.__logger.error(f'No such field: {field}')
             raise KeyError
@@ -41,6 +41,7 @@ class IndexDatabase:
             self._constants.drop()
             self._index.drop()
             self._constants.insert_one({'total_docs_count': total_docs_count})
-            self._index.insert(index, check_keys=False)
+            for word in index:
+                self._index.insert({word: index[word]}, check_keys=False)
         except Exception:
             self.__logger.exception('Error writing index to the database.')

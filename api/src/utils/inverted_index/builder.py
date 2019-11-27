@@ -35,7 +35,7 @@ class InvertedIndexBuilder:
         else:
             for cpu in range(cpu_count):
                 cpu_files = documents[cpu * batch :] if cpu == cpu_count - 1 else documents[cpu * batch : (cpu + 1) * batch]
-                pool.apply_async(self._process_documents, args=(cpu_files), callback=lambda res: self._index_callback(res))
+                pool.apply_async(self._process_documents, args=(cpu_files, ), callback=lambda res: self._index_callback(res))
         pool.close()
         pool.join()
 
