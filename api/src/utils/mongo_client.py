@@ -17,18 +17,18 @@ class IndexDatabase:
         self.__logger = Logger().get_logger(__name__)
 
     def get(self, word, doc=None):
-        field = word if doc is None else f'{word}.{doc}'
-        query = self._index.find_one({}, {field: 1})
+        query = self._index.find_one({word: {'$exists': True}})
+        self.__logger.info(f'{len(query[word])}')
         if query is not None:
             return query[word] if doc is None else query[word][doc]
         else:
-            self.__logger.error(f'No such field: {field}')
+            self.__logger.error(f'No such word: {word}')
             raise KeyError
 
     def get_constant(self, name):
-        constant_query = self._constants.find_one({}, {name: 1})
-        if constant_query is not None:
-            return constant_query[name]
+        query = self._constants.find_one({name: {'$exists': True}})
+        if query is not None:
+            return query[name]
         else:
             self.__logger.error(f'No such constant: {name}')
             raise KeyError

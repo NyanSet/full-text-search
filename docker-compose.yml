@@ -15,7 +15,7 @@ services:
   api:
     build: ./api
     restart: unless-stopped
-    command: start-api
+    command: ${COMMAND}
     env_file:
       - .env
       - api/api.env
@@ -30,3 +30,5 @@ services:
     restart: unless-stopped
     volumes:
       - ./mongo_data:/data/db
+    ports:
+      - 27017:27017
