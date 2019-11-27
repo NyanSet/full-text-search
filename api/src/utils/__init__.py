@@ -1,3 +1,4 @@
+from src.utils.wrappers.authorization import authorize
 from src.utils.inverted_index.builder import InvertedIndexBuilder
 from src.utils.inverted_index.inverted_index import InvertedIndex
 from src.utils.logger import Logger

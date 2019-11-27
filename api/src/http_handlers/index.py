@@ -3,7 +3,7 @@ import json
 from flask import request, Response
 from flask.views import MethodView
 
-from src.utils import InvertedIndex, Logger
+from src.utils import authorize, InvertedIndex, Logger
 
 
 class SearchHTTPHandler(MethodView):
@@ -15,6 +15,7 @@ class SearchHTTPHandler(MethodView):
         self.__index = InvertedIndex()
         self.__logger = Logger().get_logger(__name__)
 
+    @authorize
     def get(self):
         search_query = request.args.get('query')
         if not isinstance(search_query, str):

@@ -4,7 +4,7 @@ import os
 from logging.handlers import RotatingFileHandler
 
 from src import config
-from src.utils.singleton import singleton
+from src.utils.wrappers.singleton import singleton
 
 
 @singleton

@@ -1,35 +1,33 @@
 import functools
 import re
 
-from flask import request
+from flask import request, Response
 
 from src.utils.mongo_client import IndexDatabase
 from src.utils.logger import Logger
 
 
-logger = Logger().get_logger('auth')
-
-
 def authorize(app_function):
+    logger = Logger().get_logger('auth')
+
     @functools.wraps(app_function)
     def wrapper(*args, **kwargs):
-        api_key = request.headers.get('api-key')
-
+        logger.info(request.headers)
+        api_key = request.headers.get('api_key')
         if not api_key:
             logger.warning(f'Error 401.')
-            return utils.json_response(401, 'Api-key was not specified.')
+            return Response('API key was not specified.', status=401)
 
         symbols_correct = re.fullmatch(r'\w+', api_key)
-
         if not symbols_correct:
             logger.warning(f'Error 400.')
-            return utils.json_response(400, 'Invalid api-key format.')
+            return Response('Invalid API key format.', status=400)
 
         correct_key = IndexDatabase().validate_api_key(api_key)
-
         if not correct_key:
             logger.warning(f'Error 403.')
-            return utils.json_response(403, 'User not found by provided api-key.')
+            return Response('User not found by provided API key.', status=403)
 
         return app_function(*args, **kwargs)
+
     return wrapper

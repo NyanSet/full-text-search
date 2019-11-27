@@ -4,7 +4,7 @@ from pymongo import MongoClient
 
 from src import config
 from src.utils.logger import Logger
-from src.utils.singleton import singleton
+from src.utils.wrappers.singleton import singleton
 
 
 @singleton
@@ -45,6 +45,10 @@ class IndexDatabase:
                 self._index.insert({word: index[word]}, check_keys=False)
         except Exception:
             self.__logger.exception('Error writing index to the database.')
+
+    def insert_api_keys(self, tokens):
+        for token in tokens:
+            self._userdata.update({'api_key': token}, {"$set": {'api_key': token}}, upsert=True)
 
     def validate_api_key(self, key):
         return self._userdata.find_one({'api_key': key}) is not None

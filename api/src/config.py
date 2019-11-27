@@ -3,3 +3,5 @@ MONGO = {'host': 'localhost', 'port': 27017}
 LOGS = {'path': 'logs', 'filename': 'search.log', 'format': '%(asctime)s %(levelname)s | %(name)s %(message)s'}
 
 DOCUMENTS_PATH = 'files'
+
+TOKENS = ['abcdef123456']

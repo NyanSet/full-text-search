@@ -14,3 +14,4 @@ if __name__ == '__main__':
         logger.exception('Error building index.')
     else:
         IndexDatabase().write_index(index.get(), index.total_docs_count)
+        IndexDatabase().insert_api_keys(config.TOKENS)
