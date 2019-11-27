@@ -40,7 +40,7 @@ class InvertedIndexBuilder:
         pool.join()
 
         if self._index:
-            self.__logger.info(f'Built the index of {len(self._index)} words.')
+            self.__logger.info(f'Built index of {len(self._index)} words.')
         else:
             self.__logger.warning('Built empty index.')
 

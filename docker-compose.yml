@@ -15,7 +15,7 @@ services:
   api:
     build: ./api
     restart: unless-stopped
-    command: api
+    command: start-api
     env_file:
       - .env
       - api/api.env
