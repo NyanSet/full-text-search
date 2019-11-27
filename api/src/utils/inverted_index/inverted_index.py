@@ -16,11 +16,14 @@ class InvertedIndex:
 
     def calculate_relevance(self, request):
         scores = defaultdict(float)
+        total_docs_count = self._db.get_constant('total_docs_count')
+
         for target_word in request:
-            target_docs = self._db.get(target_word).keys()
+            word_meta = self._db.get(target_word)
+            target_docs = word_meta.keys()
             for doc in target_docs:
-                idf = math.log(self._db.get_constant('total_docs_count') / len(target_docs))
-                scores[doc] += self._db.get(target_word, doc) * abs(idf) / len(request)
+                idf = math.log(total_docs_count / len(target_docs))
+                scores[doc] += word_meta[doc] * abs(idf) / len(request)
         return scores
 
     def search(self, request, result_size):

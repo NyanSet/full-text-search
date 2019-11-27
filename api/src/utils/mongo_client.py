@@ -18,7 +18,6 @@ class IndexDatabase:
 
     def get(self, word, doc=None):
         query = self._index.find_one({word: {'$exists': True}})
-        self.__logger.info(f'{len(query[word])}')
         if query is not None:
             return query[word] if doc is None else query[word][doc]
         else:
@@ -34,7 +33,7 @@ class IndexDatabase:
             raise KeyError
 
     def get_words_list(self):
-        return list([index.keys() for index in self._index.find({}, {'_id': 0})][0])
+        return [list(word.keys())[0] for word in self._index.find({}, {'_id': 0})]
 
     def write_index(self, index, total_docs_count):
         try:
