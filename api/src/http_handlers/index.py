@@ -2,6 +2,7 @@ import json
 
 from flask import request, Response
 from flask.views import MethodView
+
 from src.utils import InvertedIndex, Logger
 
 

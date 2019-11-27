@@ -18,6 +18,7 @@ services:
     command: api
     env_file:
       - .env
+      - api/api.env
     volumes:
       - ./files:${DOCUMENTS_PATH}
       - ./logs:${LOGS_PATH}
