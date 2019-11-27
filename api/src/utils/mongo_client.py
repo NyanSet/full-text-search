@@ -14,6 +14,7 @@ class IndexDatabase:
                          port=int(os.getenv('MONGO_PORT', config.MONGO['port']))).inverted_index
         self._constants = db.constants
         self._index = db.index
+        self._userdata = db.userdata
         self.__logger = Logger().get_logger(__name__)
 
     def get(self, word, doc=None):
@@ -44,3 +45,6 @@ class IndexDatabase:
                 self._index.insert({word: index[word]}, check_keys=False)
         except Exception:
             self.__logger.exception('Error writing index to the database.')
+
+    def validate_api_key(self, key):
+        return self._userdata.find_one({'api_key': key}) is not None
